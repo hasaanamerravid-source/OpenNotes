@@ -1,0 +1,1356 @@
+/* ------------------------------------------------------------------ *
+ * OpenNotes — IntelliJ inspired appearance layer
+ *
+ * Everything here is driven by CSS custom properties and data attributes
+ * that src/renderer/src/core/appearance.ts writes, so the whole look can be
+ * changed from the settings without a rebuild.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --radius: 10px;
+  --radius-sm: 7px;
+  --radius-lg: 16px;
+  --accent: #3574f0;
+  --accent-soft: rgba(53, 116, 240, 0.18);
+  --accent-softer: rgba(53, 116, 240, 0.1);
+  --accent-contrast: #ffffff;
+  --glass-blur: 18px;
+  --gradient-from: #2f3350;
+  --gradient-to: #1b1d2b;
+  --space: 8px;
+  --control-height: 28px;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.18);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.24);
+  --shadow-3: 0 24px 60px rgba(0, 0, 0, 0.34);
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+:root[data-density='compact'] {
+  --space: 5px;
+  --control-height: 24px;
+}
+
+:root[data-density='comfortable'] {
+  --space: 11px;
+  --control-height: 32px;
+}
+
+:root[data-animations='off'] * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* --------------------------- accessibility --------------------------- */
+
+/*
+ * The keyboard focus has to be visible everywhere: somebody who works
+ * without a mouse must always see where the focus is.
+ */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: 3px;
+}
+
+/* The dialog itself is not a control, so it does not need a ring. */
+.modal:focus-visible {
+  outline: none;
+}
+
+/*
+ * People who ask their system for less movement get less movement. The
+ * setting "Animations" does the same for everybody else.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------ top bar ----------------------------- */
+
+.titlebar {
+  position: relative;
+  isolation: isolate;
+  border-bottom: 1px solid var(--border);
+  /*
+   * The bar itself is never a drag region: only the areas that are marked
+   * with `.titlebar-drag` move the window. That way no control can ever be
+   * swallowed by the window manager.
+   */
+  -webkit-app-region: no-drag;
+}
+
+/*
+ * The window can be dragged by the empty space and by the title text.
+ */
+.titlebar-drag,
+.titlebar-title,
+.titlebar-logo {
+  -webkit-app-region: drag;
+}
+
+/*
+ * Every control inside the bar stays clickable — `-webkit-app-region` is not
+ * inherited, so it has to be set on the interactive elements themselves.
+ */
+.titlebar button,
+.titlebar input,
+.titlebar select,
+.titlebar textarea,
+.titlebar a,
+.titlebar .no-drag,
+.titlebar .titlebar-actions,
+.titlebar .titlebar-actions *,
+.titlebar .window-controls,
+.titlebar .window-controls * {
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-drag {
+  flex: 1;
+  align-self: stretch;
+  min-width: 12px;
+}
+
+.titlebar-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.titlebar-product {
+  letter-spacing: 0.2px;
+}
+
+.titlebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, var(--gradient-from), var(--gradient-to));
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+:root[data-gradient='on'] .titlebar::before {
+  opacity: 1;
+}
+
+.titlebar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradient-to);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+:root[data-glass='on'] .titlebar::after {
+  opacity: var(--glass-opacity, 0.72);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+:root[data-shadows='on'] .titlebar {
+  box-shadow: var(--shadow-1);
+}
+
+/* The title bar sits on a translucent layer, so the text needs a readable
+   colour of its own. */
+:root[data-glass='on'] .titlebar .titlebar-logo,
+:root[data-gradient='on'] .titlebar .titlebar-logo {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-glass='on'] .titlebar .titlebar-title,
+:root[data-gradient='on'] .titlebar .titlebar-title {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+:root[data-glass='on'] .titlebar .icon-btn,
+:root[data-gradient='on'] .titlebar .icon-btn {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+:root[data-glass='on'] .titlebar .icon-btn:hover,
+:root[data-gradient='on'] .titlebar .icon-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+/* --------------------------- main menu button ------------------------ */
+
+.main-menu-button {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: inherit;
+  transition: background 0.15s var(--ease);
+}
+
+.main-menu-button:hover {
+  background: var(--bg-hover);
+}
+
+.main-menu-button .bars {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 16px;
+}
+
+.main-menu-button .bars span {
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.9;
+}
+
+.main-menu-button .bars span:nth-child(2) {
+  width: 11px;
+  margin-right: auto;
+}
+
+/* The panel itself is styled by the MainMenu component. */
+
+/* ------------------------------ buttons ------------------------------ */
+
+.icon-btn,
+button.icon-btn,
+.panel-button,
+.tb-btn {
+  border-radius: var(--radius-sm);
+  transition:
+    background 0.14s var(--ease),
+    color 0.14s var(--ease),
+    transform 0.14s var(--ease);
+}
+
+/* IntelliJ style: flat icon buttons that only show a background on hover. */
+.titlebar .icon-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--fg-dim);
+  background: transparent;
+}
+
+.titlebar .icon-btn:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+.titlebar .icon-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+button.icon-btn:active,
+.tb-btn:active {
+  transform: translateY(1px);
+}
+
+.icon-btn.active,
+.tb-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+input,
+select,
+textarea {
+  border-radius: var(--radius-sm);
+  transition:
+    border-color 0.15s var(--ease),
+    box-shadow 0.15s var(--ease);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-softer);
+}
+
+/* ------------------------------- panels ------------------------------ */
+
+.sidebar,
+.statusbar,
+.tabbar,
+.modal,
+.palette {
+  transition: background 0.2s var(--ease);
+}
+
+:root[data-shadows='on'] .sidebar {
+  box-shadow: 1px 0 12px rgba(0, 0, 0, 0.12);
+}
+
+:root[data-shadows='on'] .modal,
+:root[data-shadows='on'] .palette {
+  box-shadow: var(--shadow-3);
+}
+
+.panel-item,
+.settings-tab,
+.sidebar-tab {
+  border-radius: var(--radius-sm);
+  transition:
+    background 0.14s var(--ease),
+    color 0.14s var(--ease);
+}
+
+.sidebar-tab {
+  padding: 5px 10px;
+}
+
+.sidebar-tab.active {
+  background: var(--accent-soft);
+  color: var(--fg);
+  box-shadow: none;
+}
+
+/* -------------------------------- tabs ------------------------------- */
+
+.tabbar {
+  align-items: flex-end;
+  padding: 0 4px;
+  gap: 2px;
+}
+
+.tab {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  padding: 0 12px;
+  height: calc(var(--tabbar-height) - 4px);
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition:
+    background 0.15s var(--ease),
+    color 0.15s var(--ease);
+}
+
+:root[data-tab-style='rounded'] .tab {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border-color: var(--border);
+  border-bottom: 1px solid var(--bg-editor);
+  margin-bottom: -1px;
+}
+
+:root[data-tab-style='rounded'] .tab.active {
+  background: var(--bg-editor);
+}
+
+:root[data-tab-style='pill'] .tab {
+  border-radius: 999px;
+  height: calc(var(--tabbar-height) - 10px);
+  margin-bottom: 4px;
+  border: 1px solid transparent;
+}
+
+:root[data-tab-style='pill'] .tab.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+:root[data-tab-style='underline'] .tab::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s var(--ease);
+}
+
+:root[data-tab-style='underline'] .tab.active::after {
+  opacity: 1;
+}
+
+.tab.active {
+  color: var(--fg);
+}
+
+.tab.active::before {
+  display: none;
+}
+
+.tab .dirty-dot {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-soft);
+}
+
+/* ------------------------------ dialogs ------------------------------ */
+
+.modal {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(180deg, var(--bg-panel), var(--bg-elevated));
+}
+
+.modal.small {
+  border-radius: var(--radius);
+}
+
+.settings-tab {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.settings-tab.active {
+  background: var(--bg-panel);
+  color: var(--fg);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.toast {
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+}
+
+/* ------------------------------ toolbar ------------------------------ */
+
+.titlebar-actions {
+  gap: 2px;
+}
+
+.titlebar .profile-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--fg);
+  font-size: 11.5px;
+  border: 1px solid transparent;
+}
+
+.titlebar .profile-switch:hover {
+  border-color: var(--accent);
+}
+
+/* --------------------------- syntax preview -------------------------- */
+
+.theme-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+.theme-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+.theme-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.theme-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.theme-card-preview {
+  display: block;
+  padding: 8px 9px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-card-name {
+  font-size: 11px;
+  color: var(--fg-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.theme-card.active .theme-card-name {
+  color: var(--fg);
+}
+
+.icon-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.icon-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s var(--ease);
+}
+
+.icon-card:hover {
+  border-color: var(--accent);
+}
+
+.icon-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.icon-card .name {
+  font-size: 12px;
+  color: var(--fg-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-card.active .name {
+  color: var(--fg);
+}
+
+.syntax-theme-preview {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow: auto;
+  background: var(--syntax-background, var(--bg-editor));
+  color: var(--syntax-foreground, var(--fg));
+}
+
+.syntax-theme-preview .tok-keyword {
+  color: var(--syntax-keyword, #cf8e6d);
+}
+.syntax-theme-preview .tok-string {
+  color: var(--syntax-string, #6a8759);
+}
+.syntax-theme-preview .tok-number {
+  color: var(--syntax-number, #2aacb8);
+}
+.syntax-theme-preview .tok-comment {
+  color: var(--syntax-comment, #808080);
+  font-style: italic;
+}
+.syntax-theme-preview .tok-function {
+  color: var(--syntax-function, #ffc66d);
+}
+.syntax-theme-preview .tok-type {
+  color: var(--syntax-type, #56a8f5);
+}
+.syntax-theme-preview .tok-property {
+  color: var(--syntax-property, #c792ea);
+}
+.syntax-theme-preview .tok-tag {
+  color: var(--syntax-tag, #e06c75);
+}
+
+/* ------------------------- appearance preview ------------------------- */
+
+.appearance-preview {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-editor);
+}
+
+.appearance-preview .preview-top {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(120deg, var(--gradient-from), var(--gradient-to));
+}
+
+.appearance-preview .preview-top::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradient-to);
+  opacity: var(--glass-opacity, 0.72);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+.appearance-preview .preview-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.appearance-preview .preview-body {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+.appearance-preview .preview-panel {
+  width: 96px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+}
+
+.appearance-preview .preview-button {
+  height: 22px;
+  width: 76px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+/* --------------------------- light theme fix -------------------------- */
+
+:root[data-theme='light'] .titlebar::after {
+  background: #ffffff;
+}
+
+:root[data-theme='light'] .modal-header {
+  background: linear-gradient(180deg, #ffffff, #f6f8fa);
+}
+
+/* ---------------------------- responsive ----------------------------- */
+
+/*
+ * Small windows: the project view takes too much room, so it collapses and
+ * the editor keeps the space.
+ */
+@media (max-width: 900px) {
+  .sidebar {
+    max-width: 46%;
+  }
+  .titlebar-title {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .sidebar {
+    position: absolute;
+    top: var(--titlebar-height);
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    box-shadow: var(--shadow-2);
+  }
+  .sidebar-tab {
+    padding: 4px 7px;
+    font-size: 11px;
+  }
+  .titlebar-product {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .titlebar-actions .icon-btn:nth-child(n + 6) {
+    display: none;
+  }
+}
+
+/* --------------------------- window controls ------------------------- */
+
+/*
+ * The window frame belongs to the app: these are our own minimise, maximise
+ * and close buttons, so nothing of the operating system can overlap the
+ * toolbar or the burger button.
+ */
+.window-controls {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  margin-left: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.window-control {
+  width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-dim);
+  transition:
+    background 0.12s var(--ease),
+    color 0.12s var(--ease);
+}
+
+.window-control:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+.window-control.close:hover {
+  background: #e81123;
+  color: #ffffff;
+}
+
+/* -------------------------- title bar tabs --------------------------- */
+
+/*
+ * The tab strip lives in the title bar (like a browser). The tabs fade in
+ * with the bar and only the active one is fully opaque.
+ *
+ * The list of the tabs scrolls when there are more tabs than the window can
+ * show; the button that opens a new file always stays visible.
+ */
+.titlebar-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+  padding-left: 8px;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-tab-list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-app-region: no-drag;
+  mask-image: linear-gradient(to right, transparent 0, #000 10px, #000 calc(100% - 14px), transparent 100%);
+}
+
+.titlebar-tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+.titlebar-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  max-width: 220px;
+  min-width: 96px;
+  padding: 0 6px 0 10px;
+  border-radius: var(--radius-sm);
+  color: var(--fg-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 12px;
+  transition:
+    background 0.14s var(--ease),
+    color 0.14s var(--ease);
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-tab:hover {
+  background: var(--bg-hover);
+  color: var(--fg-dim);
+}
+
+.titlebar-tab.active {
+  background: var(--bg-editor);
+  color: var(--fg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.titlebar-tab .label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.titlebar-tab .dirty-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: 0 0 auto;
+}
+
+.titlebar-tab .tab-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  color: inherit;
+  opacity: 0;
+  flex: 0 0 auto;
+  transition:
+    opacity 0.12s var(--ease),
+    background 0.12s var(--ease);
+}
+
+.titlebar-tab:hover .tab-close,
+.titlebar-tab.active .tab-close {
+  opacity: 0.7;
+}
+
+.titlebar-tab .tab-close:hover {
+  background: var(--bg-active);
+  opacity: 1;
+}
+
+.titlebar-tab-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  color: var(--fg-muted);
+  flex: 0 0 auto;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-tab-add:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+/* --------------------------- activity bar ---------------------------- */
+
+.activity-bar {
+  width: 46px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border);
+  user-select: none;
+}
+
+.activity-item {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--fg-muted);
+  transition:
+    color 0.14s var(--ease),
+    background 0.14s var(--ease);
+}
+
+.activity-item:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+
+.activity-item.active {
+  color: var(--accent);
+}
+
+.activity-item.active::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 0 2px 2px 0;
+  background: var(--accent);
+}
+
+.activity-spacer {
+  flex: 1;
+}
+
+.activity-menu {
+  position: absolute;
+  left: 44px;
+  bottom: 8px;
+  min-width: 170px;
+  padding: 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-2);
+  z-index: 60;
+}
+
+.activity-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 9px;
+  border-radius: var(--radius-sm);
+  color: var(--fg-dim);
+  font-size: 12px;
+  text-align: left;
+}
+
+.activity-menu-item:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+/* ---------------------------- bottom panel --------------------------- */
+
+.bottom-panel {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--border);
+}
+
+.bottom-panel-resizer {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: row-resize;
+  z-index: 5;
+}
+
+.bottom-panel-resizer:hover {
+  background: var(--accent);
+  opacity: 0.4;
+}
+
+.bottom-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 30px;
+  padding: 0 6px 0 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.bottom-panel-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+}
+
+.bottom-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 12px;
+  color: var(--fg-muted);
+  font-size: 11.5px;
+  letter-spacing: 0.2px;
+  border-bottom: 2px solid transparent;
+}
+
+.bottom-tab:hover {
+  color: var(--fg-dim);
+}
+
+.bottom-tab.active {
+  color: var(--fg);
+  border-bottom-color: var(--accent);
+}
+
+.bottom-tab-count {
+  padding: 0 6px;
+  border-radius: 8px;
+  background: var(--bg-active);
+  color: var(--fg-dim);
+  font-size: 10px;
+}
+
+.bottom-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* The panel fills the bottom panel, so that the output scrolls inside it. */
+.bottom-panel-body > .panel {
+  height: 100%;
+  min-height: 0;
+}
+
+/* ------------------------------ problems ----------------------------- */
+
+.problem-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  border-bottom: 1px solid transparent;
+}
+
+.problem-row:hover {
+  background: var(--bg-hover);
+}
+
+.problem-severity {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.problem-severity.error {
+  color: #f38ba8;
+}
+
+.problem-severity.warning {
+  color: #f9e2af;
+}
+
+.problem-severity.info {
+  color: var(--fg-muted);
+}
+
+.problem-position {
+  flex: 0 0 auto;
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 68px;
+}
+
+.problem-message {
+  flex: 1;
+  color: var(--fg-dim);
+}
+
+.problem-source {
+  color: var(--fg-muted);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* -------------------------------- run -------------------------------- */
+
+.run-log {
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.run-line.stderr {
+  color: #f38ba8;
+}
+
+.run-line.system {
+  color: var(--fg-muted);
+}
+
+.run-line.stdout {
+  color: var(--fg-dim);
+}
+
+.large-file-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+  color: var(--fg-dim);
+  font-size: 11.5px;
+}
+
+/* The project wide search (the panel of the sidebar). */
+.project-search-panel .panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.project-search-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.project-search-options {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.project-search-glob {
+  width: 84px;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.project-search-results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.project-search-file {
+  margin-bottom: 6px;
+}
+
+.project-search-file-name {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+}
+
+.project-search-file-name .name {
+  font-weight: 600;
+}
+
+.project-search-file-name .hint {
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-search-hit {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 1px 6px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  border-radius: 3px;
+}
+
+.project-search-hit:hover {
+  background: var(--bg-hover);
+}
+
+.project-search-line {
+  flex: 0 0 auto;
+  min-width: 34px;
+  text-align: right;
+  opacity: 0.55;
+}
+
+.project-search-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+}
+
+.chip {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--fg-dim);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.chip:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+
+.chip.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* The keybindings of the settings dialog. */
+.keybinding-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.keybinding-row .name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.keybinding-input {
+  flex: 0 0 120px;
+  width: 120px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  padding: 2px 6px;
+}
+
+/* The file tree context menu. */
+.context-menu {
+  position: fixed;
+  z-index: 2000;
+  min-width: 200px;
+  padding: 2px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  color: var(--fg);
+  font-size: 12.5px;
+}
+
+.context-menu-item {
+  display: block;
+  padding: 4px 10px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.context-menu-item:hover {
+  background: var(--bg-active);
+  color: var(--fg-bright);
+}
+
+/* ------------------------------------------------------------------ *
+ * Glass polish — smoother active states, frosted overlays             *
+ * ------------------------------------------------------------------ */
+
+/* Sidebar items get a subtle glass highlight when hovered. */
+.sidebar-item,
+.sidebar-tab {
+  position: relative;
+  transition:
+    background 0.12s var(--ease),
+    color 0.12s var(--ease);
+}
+
+.sidebar-item:hover,
+.sidebar-tab:hover {
+  background: var(--bg-hover);
+}
+
+.sidebar-item.active,
+.sidebar-tab.active {
+  background: var(--accent-soft);
+  color: var(--fg);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+/* Palette (command palette) glass refinement. */
+.palette {
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-3);
+}
+
+.palette-item {
+  border-radius: var(--radius-sm);
+  transition: background 0.1s var(--ease);
+}
+
+.palette-item:hover {
+  background: var(--bg-hover);
+}
+
+.palette-item.selected {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Tab close button glass polish. */
+.titlebar-tab .tab-close {
+  backdrop-filter: blur(4px);
+}
+
+/* Status bar stat buttons glass look. */
+.statusbar .stat {
+  border-radius: var(--radius-sm);
+  transition:
+    background 0.12s var(--ease),
+    color 0.12s var(--ease);
+}
+
+.statusbar .stat:hover {
+  background: var(--bg-hover);
+}
+
+/* Bottom panel tab glass. */
+.bottom-tab {
+  transition:
+    background 0.12s var(--ease),
+    color 0.12s var(--ease);
+}
+
+.bottom-tab:hover {
+  background: var(--bg-hover);
+}
+
+/* Toast glass refinement. */
+.toast {
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-2);
+}

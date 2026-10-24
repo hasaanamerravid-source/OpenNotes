@@ -1,0 +1,346 @@
+{
+  "appId": "dev.opennotes.app",
+  "productName": "OpenNotes",
+  "icon": "build/icon.png",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "out/**/*",
+    "package.json",
+    "node_modules/iconv-lite/**/*",
+    "node_modules/safer-buffer/**/*"
+  ],
+  "asar": true,
+  "compression": "maximum",
+  "electronLanguages": [
+    "en-US"
+  ],
+  "removePackageScripts": true,
+  "npmRebuild": false,
+  "win": {
+    "target": [
+      "nsis"
+    ],
+    "artifactName": "OpenNotes-${version}-Setup.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "OpenNotes"
+  },
+  "mac": {
+    "target": [
+      "dmg"
+    ],
+    "category": "public.app-category.productivity"
+  },
+  "linux": {
+    "target": [
+      "AppImage",
+      "deb"
+    ],
+    "category": "Utility"
+  },
+  "fileAssociations": [
+    {
+      "ext": "ts",
+      "name": "TS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "tsx",
+      "name": "TSX File",
+      "role": "Editor"
+    },
+    {
+      "ext": "js",
+      "name": "JS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "jsx",
+      "name": "JSX File",
+      "role": "Editor"
+    },
+    {
+      "ext": "mjs",
+      "name": "MJS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "cjs",
+      "name": "CJS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "json",
+      "name": "JSON File",
+      "role": "Editor"
+    },
+    {
+      "ext": "jsonc",
+      "name": "JSONC File",
+      "role": "Editor"
+    },
+    {
+      "ext": "html",
+      "name": "HTML File",
+      "role": "Editor"
+    },
+    {
+      "ext": "htm",
+      "name": "HTM File",
+      "role": "Editor"
+    },
+    {
+      "ext": "css",
+      "name": "CSS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "scss",
+      "name": "SCSS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "less",
+      "name": "LESS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "md",
+      "name": "MD File",
+      "role": "Editor"
+    },
+    {
+      "ext": "markdown",
+      "name": "MARKDOWN File",
+      "role": "Editor"
+    },
+    {
+      "ext": "py",
+      "name": "PY File",
+      "role": "Editor"
+    },
+    {
+      "ext": "go",
+      "name": "GO File",
+      "role": "Editor"
+    },
+    {
+      "ext": "rs",
+      "name": "RS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "java",
+      "name": "JAVA File",
+      "role": "Editor"
+    },
+    {
+      "ext": "kt",
+      "name": "KT File",
+      "role": "Editor"
+    },
+    {
+      "ext": "kts",
+      "name": "KTS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "c",
+      "name": "C File",
+      "role": "Editor"
+    },
+    {
+      "ext": "h",
+      "name": "H File",
+      "role": "Editor"
+    },
+    {
+      "ext": "cpp",
+      "name": "CPP File",
+      "role": "Editor"
+    },
+    {
+      "ext": "hpp",
+      "name": "HPP File",
+      "role": "Editor"
+    },
+    {
+      "ext": "cs",
+      "name": "CS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "fs",
+      "name": "FS File",
+      "role": "Editor"
+    },
+    {
+      "ext": "php",
+      "name": "PHP File",
+      "role": "Editor"
+    },
+    {
+      "ext": "rb",
+      "name": "RB File",
+      "role": "Editor"
+    },
+    {
+      "ext": "swift",
+      "name": "SWIFT File",
+      "role": "Editor"
+    },
+    {
+      "ext": "dart",
+      "name": "DART File",
+      "role": "Editor"
+    },
+    {
+      "ext": "lua",
+      "name": "LUA File",
+      "role": "Editor"
+    },
+    {
+      "ext": "pl",
+      "name": "PL File",
+      "role": "Editor"
+    },
+    {
+      "ext": "r",
+      "name": "R File",
+      "role": "Editor"
+    },
+    {
+      "ext": "jl",
+      "name": "JL File",
+      "role": "Editor"
+    },
+    {
+      "ext": "sh",
+      "name": "SH File",
+      "role": "Editor"
+    },
+    {
+      "ext": "bash",
+      "name": "BASH File",
+      "role": "Editor"
+    },
+    {
+      "ext": "ps1",
+      "name": "PS1 File",
+      "role": "Editor"
+    },
+    {
+      "ext": "bat",
+      "name": "BAT File",
+      "role": "Editor"
+    },
+    {
+      "ext": "sql",
+      "name": "SQL File",
+      "role": "Editor"
+    },
+    {
+      "ext": "yaml",
+      "name": "YAML File",
+      "role": "Editor"
+    },
+    {
+      "ext": "yml",
+      "name": "YML File",
+      "role": "Editor"
+    },
+    {
+      "ext": "toml",
+      "name": "TOML File",
+      "role": "Editor"
+    },
+    {
+      "ext": "ini",
+      "name": "INI File",
+      "role": "Editor"
+    },
+    {
+      "ext": "xml",
+      "name": "XML File",
+      "role": "Editor"
+    },
+    {
+      "ext": "vue",
+      "name": "VUE File",
+      "role": "Editor"
+    },
+    {
+      "ext": "svelte",
+      "name": "SVELTE File",
+      "role": "Editor"
+    },
+    {
+      "ext": "astro",
+      "name": "ASTRO File",
+      "role": "Editor"
+    },
+    {
+      "ext": "gradle",
+      "name": "GRADLE File",
+      "role": "Editor"
+    },
+    {
+      "ext": "tf",
+      "name": "TF File",
+      "role": "Editor"
+    },
+    {
+      "ext": "graphql",
+      "name": "GRAPHQL File",
+      "role": "Editor"
+    },
+    {
+      "ext": "proto",
+      "name": "PROTO File",
+      "role": "Editor"
+    },
+    {
+      "ext": "cmake",
+      "name": "CMAKE File",
+      "role": "Editor"
+    },
+    {
+      "ext": "dockerfile",
+      "name": "DOCKERFILE File",
+      "role": "Editor"
+    },
+    {
+      "ext": "gitignore",
+      "name": "GITIGNORE File",
+      "role": "Editor"
+    },
+    {
+      "ext": "editorconfig",
+      "name": "EDITORCONFIG File",
+      "role": "Editor"
+    },
+    {
+      "ext": "log",
+      "name": "LOG File",
+      "role": "Editor"
+    },
+    {
+      "ext": "diff",
+      "name": "DIFF File",
+      "role": "Editor"
+    },
+    {
+      "ext": "csv",
+      "name": "CSV File",
+      "role": "Editor"
+    }
+  ],
+  "electronDist": "node_modules/electron/dist"
+}

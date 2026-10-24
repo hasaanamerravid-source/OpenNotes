@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=OpenNotes
+Comment=An all-in-one text editor — code, markdown, documents and notes
+Exec=opennotes-launcher %F
+Icon=opennotes
+Terminal=false
+Categories=Development;TextEditor;Utility;
+MimeType=text/plain;text/markdown;text/x-c;text/x-c++src;application/json;application/xml;
+StartupWMClass=OpenNotes

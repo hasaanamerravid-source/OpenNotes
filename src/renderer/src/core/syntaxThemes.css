@@ -1,0 +1,254 @@
+/* ------------------------------------------------------------------ *
+ * OpenNotes — syntax colour themes
+ *
+ * Every theme exposes its colours as CSS custom properties so that
+ * non CodeMirror surfaces (settings preview, status bar, diffs, ...) can
+ * follow the active syntax theme as well.
+ *
+ * The active theme is selected with the `data-syntax-theme` attribute,
+ * which is set on the document root (see core/appearance.ts) and on the
+ * settings preview element.
+ * ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ *
+ * Darcula — IntelliJ IDEA dark
+ * ------------------------------------------------------------------ */
+[data-syntax-theme='darcula'] {
+  --syntax-background: #2b2b2b;
+  --syntax-foreground: #a9b7c6;
+  --syntax-caret: #a9b7c6;
+  --syntax-selection: #214283;
+  --syntax-selection-foreground: #ffffff;
+  --syntax-active-line: #323232;
+  --syntax-gutter-background: #2b2b2b;
+  --syntax-gutter-foreground: #606366;
+  --syntax-active-gutter-foreground: #a9b7c6;
+  --syntax-matching-bracket: #3c5c77;
+  --syntax-search-match: #4b525e;
+  --syntax-indent-guide: #3c3f41;
+  --syntax-comment: #808080;
+  --syntax-line-number: #606366;
+
+  --syntax-token-keyword: #cf8e6d;
+  --syntax-token-string: #6a8759;
+  --syntax-token-comment: #808080;
+  --syntax-token-number: #2aacb8;
+  --syntax-token-function: #ffc66d;
+  --syntax-token-type: #56a8f5;
+  --syntax-token-tag: #e8bf6a;
+  --syntax-token-property: #a9b7c6;
+  --syntax-token-operator: #bcbec4;
+  --syntax-token-constant: #cc7832;
+}
+
+/* ------------------------------------------------------------------ *
+ * IntelliJ Light
+ * ------------------------------------------------------------------ */
+[data-syntax-theme='intellij-light'] {
+  --syntax-background: #ffffff;
+  --syntax-foreground: #000000;
+  --syntax-caret: #000000;
+  --syntax-selection: #c9dffd;
+  --syntax-selection-foreground: #000000;
+  --syntax-active-line: #f2f2f2;
+  --syntax-gutter-background: #ffffff;
+  --syntax-gutter-foreground: #999999;
+  --syntax-active-gutter-foreground: #000000;
+  --syntax-matching-bracket: #cce8ff;
+  --syntax-search-match: #ffe082;
+  --syntax-indent-guide: #e3e3e3;
+  --syntax-comment: #8c8c8c;
+  --syntax-line-number: #999999;
+
+  --syntax-token-keyword: #0033b3;
+  --syntax-token-string: #067d17;
+  --syntax-token-comment: #8c8c8c;
+  --syntax-token-number: #1750eb;
+  --syntax-token-function: #00627a;
+  --syntax-token-type: #000000;
+  --syntax-token-tag: #0033b3;
+  --syntax-token-property: #0033b3;
+  --syntax-token-operator: #000000;
+  --syntax-token-constant: #871094;
+}
+
+/* ------------------------------------------------------------------ *
+ * Rainbow — high contrast, one hue per token family
+ * ------------------------------------------------------------------ */
+[data-syntax-theme='rainbow'] {
+  --syntax-background: #11131c;
+  --syntax-foreground: #d7dae0;
+  --syntax-caret: #ff6b6b;
+  --syntax-selection: #2e3b57;
+  --syntax-selection-foreground: #ffffff;
+  --syntax-active-line: #191c28;
+  --syntax-gutter-background: #11131c;
+  --syntax-gutter-foreground: #4b5263;
+  --syntax-active-gutter-foreground: #d7dae0;
+  --syntax-matching-bracket: #3e5c8a;
+  --syntax-search-match: #6b5a00;
+  --syntax-indent-guide: #262a38;
+  --syntax-comment: #8b949e;
+  --syntax-line-number: #4b5263;
+
+  --syntax-token-keyword: #ff6b6b;
+  --syntax-token-string: #7ee787;
+  --syntax-token-comment: #8b949e;
+  --syntax-token-number: #56d4dd;
+  --syntax-token-function: #d2a8ff;
+  --syntax-token-type: #79c0ff;
+  --syntax-token-tag: #e3b341;
+  --syntax-token-property: #a5a5ff;
+  --syntax-token-operator: #79c0ff;
+  --syntax-token-constant: #ffa657;
+}
+
+/* ------------------------------------------------------------------ *
+ * Monokai
+ * ------------------------------------------------------------------ */
+[data-syntax-theme='monokai'] {
+  --syntax-background: #272822;
+  --syntax-foreground: #f8f8f2;
+  --syntax-caret: #f8f8f2;
+  --syntax-selection: #49483e;
+  --syntax-selection-foreground: #f8f8f2;
+  --syntax-active-line: #3e3d32;
+  --syntax-gutter-background: #272822;
+  --syntax-gutter-foreground: #90908a;
+  --syntax-active-gutter-foreground: #c2c2bf;
+  --syntax-matching-bracket: #49483e;
+  --syntax-search-match: #6a6a5e;
+  --syntax-indent-guide: #464741;
+  --syntax-comment: #75715e;
+  --syntax-line-number: #90908a;
+
+  --syntax-token-keyword: #f92672;
+  --syntax-token-string: #e6db74;
+  --syntax-token-comment: #75715e;
+  --syntax-token-number: #ae81ff;
+  --syntax-token-function: #a6e22e;
+  --syntax-token-type: #66d9ef;
+  --syntax-token-tag: #f92672;
+  --syntax-token-property: #f8f8f2;
+  --syntax-token-operator: #f92672;
+  --syntax-token-constant: #ae81ff;
+}
+
+/* ------------------------------------------------------------------ *
+ * Solarized Dark
+ * ------------------------------------------------------------------ */
+[data-syntax-theme='solarized'] {
+  --syntax-background: #002b36;
+  --syntax-foreground: #839496;
+  --syntax-caret: #93a1a1;
+  --syntax-selection: #073642;
+  --syntax-selection-foreground: #93a1a1;
+  --syntax-active-line: #073642;
+  --syntax-gutter-background: #002b36;
+  --syntax-gutter-foreground: #586e75;
+  --syntax-active-gutter-foreground: #93a1a1;
+  --syntax-matching-bracket: #0e5a6b;
+  --syntax-search-match: #0a4b58;
+  --syntax-indent-guide: #073642;
+  --syntax-comment: #586e75;
+  --syntax-line-number: #586e75;
+
+  --syntax-token-keyword: #859900;
+  --syntax-token-string: #2aa198;
+  --syntax-token-comment: #586e75;
+  --syntax-token-number: #2aa198;
+  --syntax-token-function: #268bd2;
+  --syntax-token-type: #b58900;
+  --syntax-token-tag: #268bd2;
+  --syntax-token-property: #268bd2;
+  --syntax-token-operator: #859900;
+  --syntax-token-constant: #cb4b16;
+}
+
+/* ------------------------------------------------------------------ *
+ * Midnight — deep navy with cyan / magenta accents
+ * ------------------------------------------------------------------ */
+[data-syntax-theme='midnight'] {
+  --syntax-background: #0f1226;
+  --syntax-foreground: #c8d3f5;
+  --syntax-caret: #c8d3f5;
+  --syntax-selection: #283055;
+  --syntax-selection-foreground: #ffffff;
+  --syntax-active-line: #171b33;
+  --syntax-gutter-background: #0f1226;
+  --syntax-gutter-foreground: #454c7a;
+  --syntax-active-gutter-foreground: #c8d3f5;
+  --syntax-matching-bracket: #2e3d7a;
+  --syntax-search-match: #3a4a7a;
+  --syntax-indent-guide: #1e2340;
+  --syntax-comment: #676b95;
+  --syntax-line-number: #454c7a;
+
+  --syntax-token-keyword: #c792ea;
+  --syntax-token-string: #c3e88d;
+  --syntax-token-comment: #676b95;
+  --syntax-token-number: #f78c6c;
+  --syntax-token-function: #82aaff;
+  --syntax-token-type: #82aaff;
+  --syntax-token-tag: #ff9cac;
+  --syntax-token-property: #c8d3f5;
+  --syntax-token-operator: #89ddff;
+  --syntax-token-constant: #ff9cac;
+}
+
+/* ------------------------------------------------------------------ *
+ * Settings preview
+ * ------------------------------------------------------------------ */
+.syntax-theme-preview {
+  background: var(--syntax-background, #2b2b2b);
+  color: var(--syntax-foreground, #a9b7c6);
+  border: 1px solid var(--syntax-indent-guide, #3c3f41);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--font-mono, 'Cascadia Code', Consolas, monospace);
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.syntax-theme-preview .tok-keyword {
+  color: var(--syntax-token-keyword, #cf8e6d);
+}
+
+.syntax-theme-preview .tok-string {
+  color: var(--syntax-token-string, #6a8759);
+}
+
+.syntax-theme-preview .tok-comment {
+  color: var(--syntax-token-comment, #808080);
+  font-style: italic;
+}
+
+.syntax-theme-preview .tok-number {
+  color: var(--syntax-token-number, #2aacb8);
+}
+
+.syntax-theme-preview .tok-function {
+  color: var(--syntax-token-function, #ffc66d);
+}
+
+.syntax-theme-preview .tok-type {
+  color: var(--syntax-token-type, #56a8f5);
+}
+
+.syntax-theme-preview .tok-tag {
+  color: var(--syntax-token-tag, #e8bf6a);
+}
+
+.syntax-theme-preview .tok-property {
+  color: var(--syntax-token-property, #a9b7c6);
+}
+
+.syntax-theme-preview .tok-operator {
+  color: var(--syntax-token-operator, #bcbec4);
+}
+
+.syntax-theme-preview .tok-constant {
+  color: var(--syntax-token-constant, #cc7832);
+}
